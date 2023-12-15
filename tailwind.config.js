@@ -1,6 +1,9 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: ["./src/**/*.vue"],
+  content: [
+    "./index.html",
+    "./src/**/*.{vue,js,ts,jsx,tsx}",
+  ],
   theme: {
     colors: {
       blue: {
@@ -33,8 +36,36 @@ export default {
       2: "2px",
       8: "8px",
       12: "12px",
+      14: "14px",
       15: "15px",
+      16: "16px",
+      48: "48px",
     },
   },
-  plugins: [],
+  corePlugins: {
+    container: false,
+  },
+  plugins: [
+    function ({ addComponents }) {
+      addComponents({
+        '.container': {
+          maxWidth: '100%',
+          marginLeft: 'auto',
+          marginRight: 'auto',
+          '@screen sm': {
+            maxWidth: '100%',
+          },
+          '@screen md': {
+            maxWidth: '768px',
+          },
+          '@screen lg': {
+            maxWidth: '812px',
+          },
+          '@screen xl': {
+            maxWidth: '812px',
+          },
+        }
+      })
+    },
+  ],
 };
