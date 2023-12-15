@@ -1,3 +1,5 @@
+import defaultTheme from "tailwindcss/defaultTheme";
+
 /** @type {import('tailwindcss').Config} */
 export default {
   content: [
@@ -41,6 +43,11 @@ export default {
       16: "16px",
       48: "48px",
     },
+    extend: {
+      fontFamily: {
+        "sans": ["Roboto", ...defaultTheme.fontFamily.sans],
+      },
+    }
   },
   corePlugins: {
     container: false,
