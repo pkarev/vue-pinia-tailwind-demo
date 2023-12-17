@@ -11,15 +11,18 @@
       />
       {{ title }}
     </div>
-    <div class="max-md:px-[16px]" :class="slotWrapClass">
-      <slot v-if="isExpanded"></slot>
-    </div>
+    <BbTransitionExpand>
+      <div class="max-md:px-[16px]" :class="slotWrapClass" v-if="isExpanded">
+        <slot></slot>
+      </div>
+    </BbTransitionExpand>
   </div>
 </template>
 
 <script setup lang="ts">
 import {computed, ref} from "vue";
 import BbIcon from "./BbIcon.vue";
+import BbTransitionExpand from "./BbTransitionExpand.vue";
 
 defineProps({
   title: { type: String, required: true },
