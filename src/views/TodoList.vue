@@ -1,7 +1,7 @@
 <template>
   <BbCollapse :title="doneTitle" v-if="isDoneListShown">
     <div>
-      <ul>
+      <BbTransitionGroupList>
         <li v-for="(item) in frontLogDoneList" :key="item.created.toISOString()"
             class="my-[8px]"
         >
@@ -9,10 +9,10 @@
                       @update:is-checked="toggleTodo(item.created)"
           />
         </li>
-      </ul>
+      </BbTransitionGroupList>
     </div>
   </BbCollapse>
-  <ul class="pt-[4px] max-md:px-[16px] w-full" v-if="hasFrontLogList">
+  <BbTransitionGroupList class="pt-[4px] max-md:px-[16px] w-full" v-if="hasFrontLogList">
     <li v-for="(item, index) in frontLogNotDoneList" :key="item.created.toISOString()"
         class="flex justify-stretch my-[8px]"
     >
@@ -38,17 +38,18 @@
         </div>
       </div>
     </li>
-  </ul>
+  </BbTransitionGroupList>
 </template>
 
 <script setup lang="ts">
 import {computed, ref} from "vue";
+import {storeToRefs} from "pinia";
+import useTodoListStore from "../stores/TodoListStore.ts";
 import BbCollapse from "../components/BbCollapse.vue";
 import BbTodoItem from "../components/BbTodoItem.vue";
-import useTodoListStore from "../stores/TodoListStore.ts";
 import BbDotsButton from "../components/BbDotsButton.vue";
 import BbButton from "../components/BbButton.vue";
-import {storeToRefs} from "pinia";
+import BbTransitionGroupList from "../components/BbTransitionGroupList.vue";
 import {useTodoItem} from "../composables/useTodoItem.ts";
 
 const store = useTodoListStore();

@@ -58,12 +58,12 @@ export const DEFAULT_TODO_LIST: Todo[] = [
     {
         created: new Date("Sat Dec 16 2023 21:40:52 GMT+0100 (Central European Standard Time)"),
         text: "Animate the list items with Vue Transitions",
-        isDone: false,
+        isDone: true,
         isBacklog: false,
     },
     {
         created: new Date("Sat Dec 16 2023 21:38:52 GMT+0100 (Central European Standard Time)"),
-        text: "Create a public Github or Gitlab repository and upload your work there",
+        text: "Give a feedback",
         isDone: false,
         isBacklog: true,
     },

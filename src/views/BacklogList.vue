@@ -5,7 +5,7 @@
                     v-model:search="search"
                     class="mt-16 max-md:px-[16px]"
     />
-    <ul class="pt-[4px] max-md:px-[16px] mt-[16px]" v-if="hasBackLogList">
+    <BbTransitionGroupList class="pt-[4px] max-md:px-[16px] mt-[16px]" v-if="hasBackLogList">
       <li v-for="item in sortedBacklog.value" :key="item.text"
           class="flex justify-stretch my-[8px] first:mt-[0px] last:mb-[0px]"
       >
@@ -19,21 +19,20 @@
           Move to list
         </BbButton>
       </li>
-    </ul>
+    </BbTransitionGroupList>
   </div>
 </template>
 
 <script setup lang="ts">
 import {computed, Ref, ref} from "vue";
 import useTodoListStore, {Todo} from "../stores/TodoListStore.ts";
+import {storeToRefs} from "pinia";
 import BbTodoItem from "../components/BbTodoItem.vue";
 import BbButton from "../components/BbButton.vue";
 import TodoListFilter, {FilterType} from "./TodoListFilter.vue";
-
-``
-import {storeToRefs} from "pinia";
-import {sortDatesChronologically, sortStringsAlphabetically} from "../utils/sort.ts";
+import BbTransitionGroupList from "../components/BbTransitionGroupList.vue";
 import {useTodoItem} from "../composables/useTodoItem.ts";
+import {sortDatesChronologically, sortStringsAlphabetically} from "../utils/sort.ts";
 
 const store = useTodoListStore();
 const {backLogList} = storeToRefs(store);
