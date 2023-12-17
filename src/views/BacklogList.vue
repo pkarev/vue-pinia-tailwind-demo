@@ -5,11 +5,12 @@
                     v-model:search="search"
                     class="mt-16 max-md:px-[16px]"
     />
-    <ul class="pt-[4px] max-md:px-[16px] mt-[16px]">
+    <ul class="pt-[4px] max-md:px-[16px] mt-[16px]" v-if="hasBackLogList">
       <li v-for="item in sortedBacklog.value" :key="item.text"
           class="flex justify-stretch my-[8px] first:mt-[0px] last:mb-[0px]"
       >
-        <BbTodoItem :item="item" @update:is-checked="item.isDone = !item.isDone"
+        <BbTodoItem :item="item"
+                    @update:is-checked="toggleTodo(item.created)"
                     class="grow"
         />
         <BbButton variant="outlined" small
@@ -27,15 +28,18 @@ import {computed, Ref, ref} from "vue";
 import useTodoListStore, {Todo} from "../stores/TodoListStore.ts";
 import BbTodoItem from "../components/BbTodoItem.vue";
 import BbButton from "../components/BbButton.vue";
-import TodoListFilter, {FilterType} from "./TodoListFilter.vue";``
+import TodoListFilter, {FilterType} from "./TodoListFilter.vue";
+
+``
 import {storeToRefs} from "pinia";
 import {sortDatesChronologically, sortStringsAlphabetically} from "../utils/sort.ts";
+import {useTodoItem} from "../composables/useTodoItem.ts";
 
 const store = useTodoListStore();
-const { backLogList } = storeToRefs(store);
+const {backLogList} = storeToRefs(store);
 
 const areFiltersShown = computed((): boolean => {
-  return backLogList.value.length > 1;
+  return backLogList.value.length > 1 && hasBackLogList.value;
 })
 
 const search = ref("");
@@ -50,14 +54,17 @@ const searchedBackLogList: Ref<Todo[]> = computed(() => {
 });
 
 const activeFilter: Ref<FilterType> = ref("ByName" as FilterType);
+
 const sortedBacklogByText = computed(() => {
   return [...searchedBackLogList.value]
       .sort((current, next) => sortStringsAlphabetically(current.text, next.text));
 });
+
 const sortedBacklogByDate = computed(() => {
   return [...searchedBackLogList.value]
       .sort((current, next) => sortDatesChronologically(current.created, next.created));
 });
+
 const sortedBacklog = computed(() => {
   return activeFilter.value === "ByName" ? sortedBacklogByText : sortedBacklogByDate;
 });
@@ -65,4 +72,10 @@ const sortedBacklog = computed(() => {
 const moveTodoToFrontLog = (date: Date) => {
   store.toggleIsBackLog(date);
 }
+
+const hasBackLogList = computed((): boolean => {
+  return !!backLogList.value.length;
+});
+
+const { toggleTodo } = useTodoItem(store);
 </script>

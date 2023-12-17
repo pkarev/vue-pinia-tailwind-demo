@@ -30,6 +30,6 @@ const onAdd = (text: string) => {
     created: new Date(),
     isDone: false,
     isBacklog: route.path === paths.backlog,
-  })
+  });
 }
 </script>

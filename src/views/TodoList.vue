@@ -5,16 +5,19 @@
         <li v-for="(item) in frontLogDoneList" :key="item.created.toISOString()"
             class="my-[8px]"
         >
-          <BbTodoItem :item="item" @update:is-checked="item.isDone = !item.isDone"/>
+          <BbTodoItem :item="item"
+                      @update:is-checked="toggleTodo(item.created)"
+          />
         </li>
       </ul>
     </div>
   </BbCollapse>
-  <ul class="pt-[4px] max-md:px-[16px] w-full">
+  <ul class="pt-[4px] max-md:px-[16px] w-full" v-if="hasFrontLogList">
     <li v-for="(item, index) in frontLogNotDoneList" :key="item.created.toISOString()"
         class="flex justify-stretch my-[8px]"
     >
-      <BbTodoItem :item="item" @update:is-checked="item.isDone = !item.isDone"
+      <BbTodoItem :item="item"
+                  @update:is-checked="toggleTodo(item.created)"
                   class="grow"
       />
       <div class="relative shrink-0 ml-8">
@@ -46,9 +49,10 @@ import useTodoListStore from "../stores/TodoListStore.ts";
 import BbDotsButton from "../components/BbDotsButton.vue";
 import BbButton from "../components/BbButton.vue";
 import {storeToRefs} from "pinia";
+import {useTodoItem} from "../composables/useTodoItem.ts";
 
 const store = useTodoListStore();
-const { frontLogDoneList, frontLogNotDoneList } = storeToRefs(store);
+const { frontLogList, frontLogDoneList, frontLogNotDoneList } = storeToRefs(store);
 
 const activeControlsIndex = ref(-1);
 
@@ -74,13 +78,19 @@ const isDoneListShown = computed(() => {
   return frontLogDoneList.value.length;
 });
 
-const deleteTodo = (date: Date, index: number) => {
+const deleteTodo = (date: Date, index: number): void => {
   toggleControls(index);
   store.deleteTodo(date);
 }
 
-const moveTodoToBacklog = (date: Date, index: number) => {
+const moveTodoToBacklog = (date: Date, index: number): void => {
   toggleControls(index);
   store.toggleIsBackLog(date);
 }
+
+const { toggleTodo } = useTodoItem(store);
+
+const hasFrontLogList = computed((): boolean => {
+  return frontLogList.value.length > 0;
+});
 </script>
