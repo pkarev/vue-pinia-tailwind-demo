@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@popperjs/core": "^2.11.8",
     "pinia": "^2.1.7",
     "vite-svg-loader": "^5.1.0",
     "vue": "^3.3.4",
